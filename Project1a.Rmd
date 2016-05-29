@@ -2,7 +2,7 @@
 title: "Exponential vs. Normal Comparison"
 author: "EGB"
 date: "May 29, 2016"
-output: pdf_document
+output: html_document
 ---
 
 This is a comparison of a distribution of the averages of exponential samples.  The mean and variance will be compared to theoretical values and the distribution will be compared to a normal distribution.
@@ -37,18 +37,18 @@ text(mean(MExp)-1, 200, labels = round(mean(MExp),3), col = "turquoise", lwd = 4
 ```{r}
 MVar = NULL
 set.seed(33)
-for (i in 1:1000) MVar = c(MVar, var(rexp(40,0.2)))
+for (i in 1:1000) MVar = c(MVar, (MExp[i]-mean(MExp))*sqrt(40)/(1/.2))
 ```
 
 ##Variance Histogram
 
 ```{r, echo=FALSE}
 hist(MVar, main = "Sample Variance vs. Theoretical Variance")
-abline(v = (1/0.2)^2, col = "blue", lwd = 4)
-abline(v = mean(MVar), col = "purple", lwd = 4)
+abline(v = (1/0.2^2)/40, col = "blue", lwd = 4)
+abline(v = var(MExp), col = "purple", lwd = 4)
 legend("topright", lty = 1, lwd = 4, col = c("blue", "purple"), legend = c("Theoretical", "Sample"))
-text((1/.04)+5, 200, labels = (1/.2)^2, col = "blue", lwd = 2)
-text(mean(MVar)-5, 200, labels = round(mean(MVar),3), col = "purple", lwd = 2)
+text((1/.04)/40-.2, 200, labels = (1/.2^2)/40, col = "blue", lwd = 2)
+text(var(MExp)+.2, 200, labels = round(var(MExp),3), col = "purple", lwd = 2)
 ```
 
 The sample is very close to the theoretical value.
