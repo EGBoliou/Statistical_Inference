@@ -1,0 +1,77 @@
+---
+title: "ToothGrowth"
+author: "EGB"
+date: "May 29, 2016"
+output: html_document
+---
+
+This document will provide some exploratory data analysis with the ToothGrowth data in the R datasets library and some confidence iterval and/or hypothesis testing along with their subsequent conclusions.
+
+#ToothGrowth Data
+
+```{r}
+library(datasets)
+str(ToothGrowth)
+```
+
+#Exploratory Plot
+
+```{r, echo=FALSE}
+library(ggplot2)
+qplot(dose, len, data = ToothGrowth, color = supp)
+```
+
+#95% Confidence Intervals
+
+```{r}
+ML = mean(ToothGrowth$len)
+ML
+n = 60
+ML + c(-1,1)*qnorm(.975)*sd(ToothGrowth$len)/sqrt(n)
+```
+
+
+#Hypothesis Testing
+
+Null hypothesis, H0 is that the mean of tooth growth is ML (18.81333)
+
+##Tooth growth by Supp
+###Supp - OJ
+
+```{r}
+MLO = mean(ToothGrowth$len[ToothGrowth$supp=="OJ"])
+MLO
+```
+
+###Supp - VC
+
+```{r}
+MLV = mean(ToothGrowth$len[ToothGrowth$supp=="VC"])
+MLV
+```
+
+Since both values are between the 95% confidence interval, we can still assume our Null hypothesis is true
+
+##Tooth growth by Dose
+###Dose - 0.5
+
+```{r}
+MLD = mean(ToothGrowth$len[ToothGrowth$dose==0.5])
+MLD
+```
+
+###Dose - 1.0
+
+```{r}
+MLD1 = mean(ToothGrowth$len[ToothGrowth$dose==1.0])
+MLD1
+```
+
+###Dose - 2.0
+
+```{r}
+MLD2 = mean(ToothGrowth$len[ToothGrowth$dose==2.0])
+MLD2
+```
+
+Both the 0.5 and 2.0 dose means are out of our 95% confidence interval.  Because that is two out of the three dose values, I would think our null hypothesis needs to be further examined.

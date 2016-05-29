@@ -1,0 +1,74 @@
+---
+title: "Exponential vs. Normal Comparison"
+author: "EGB"
+date: "May 29, 2016"
+output: pdf_document
+---
+
+This is a comparison of a distribution of the averages of exponential samples.  The mean and variance will be compared to theoretical values and the distribution will be compared to a normal distribution.
+
+#Simulations
+
+Before comparisons to mean, variance and overall distribution can be made, simulations must be ran.  Lambda will be set to 0.2, the average of 40 exponentials will be taken and this simulation will run for 1000 iterations.
+
+#Sample Mean versus Theoretical Mean
+##Mean Simulation
+
+```{r}
+MExp = NULL
+set.seed(33)
+for (i in 1:1000) MExp = c(MExp, mean(rexp(40,0.2)))
+```
+
+##Mean Histogram
+
+```{r, echo=FALSE}
+hist(MExp, main = "Sample Mean vs. Theoretical Mean")
+abline(v = 1/0.2, col = "magenta", lwd = 4)
+abline(v = mean(MExp), col = "turquoise", lwd = 4)
+legend("topright", lty = 1, lwd = 4, col = c("magenta", "turquoise"), legend = c("Theoretical", "Sample"))
+text((1/.2)+1, 200, labels = 1/.2, col = "magenta", lwd = 4)
+text(mean(MExp)-1, 200, labels = round(mean(MExp),3), col = "turquoise", lwd = 4)
+```
+
+#Sample Variance versus Theoretical Variance
+##Variance Simulation
+
+```{r}
+MVar = NULL
+set.seed(33)
+for (i in 1:1000) MVar = c(MVar, var(rexp(40,0.2)))
+```
+
+##Variance Histogram
+
+```{r, echo=FALSE}
+hist(MVar, main = "Sample Variance vs. Theoretical Variance")
+abline(v = (1/0.2)^2, col = "blue", lwd = 4)
+abline(v = mean(MVar), col = "purple", lwd = 4)
+legend("topright", lty = 1, lwd = 4, col = c("blue", "purple"), legend = c("Theoretical", "Sample"))
+text((1/.04)+5, 200, labels = (1/.2)^2, col = "blue", lwd = 2)
+text(mean(MVar)-5, 200, labels = round(mean(MVar),3), col = "purple", lwd = 2)
+```
+
+The sample is very close to the theoretical value.
+
+#Distribution
+##Simulation of 1000 AVERAGE Exponential Distributions
+
+```{r}
+AExp = NULL
+set.seed(33)
+for (i in 1:1000)
+  AExp = c(AExp, mean(rexp(40,.2)))
+```
+
+```{r, echo=FALSE}
+par(mfrow = c(1,3), mar = c(4,4,6,1), oma = c(0,0,2,0))
+hist(rexp(1000,.2), main = "Exponential")
+hist(AExp, main = "1000 Exponential Averages", xlab = "mean(rexp(40,.2))")
+hist(rnorm(1000), main = "Normal")
+mtext("Distribution Comparisons", outer = TRUE)
+```
+
+The collection of averages much more closely resembles a normal distribution than a random collection of 1000 exponential samples.
